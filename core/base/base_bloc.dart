@@ -1,5 +1,7 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+// Base Bloc Implementation
 
-abstract class BaseBloc<Event, State> extends Bloc<Event, State> {
-  BaseBloc(State initialState) : super(initialState);
+abstract class BaseBloc<Event, State> {
+  void add(Event event);
+  void emit(State state);
+  // Other base functionalities
 }
