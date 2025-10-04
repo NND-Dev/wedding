@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // Import all section widgets
-import 'lib/widgets/hero_section.dart';
-import 'lib/widgets/story_timeline_section.dart';
-import 'lib/widgets/wedding_details_section.dart';
-import 'lib/widgets/gallery_section.dart';
-import 'lib/widgets/message_section.dart';
+import 'package:wedding_invitation_app/widgets/hero_section.dart';
+import 'package:wedding_invitation_app/widgets/story_timeline_section.dart';
+import 'package:wedding_invitation_app/widgets/wedding_details_section.dart';
+import 'package:wedding_invitation_app/widgets/gallery_section.dart';
+import 'package:wedding_invitation_app/widgets/message_section.dart';
 
 // Import domain entities
-import 'lib/features/wedding/domain/entities/wedding_info.dart';
+import 'package:wedding_invitation_app/features/wedding/domain/entities/wedding_info.dart';
 
 void main() {
   runApp(const WeddingApp());
