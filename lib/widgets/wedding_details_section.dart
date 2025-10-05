@@ -21,10 +21,9 @@ class WeddingDetailsSection extends StatelessWidget {
     final isMobile = screenWidth < 600;
 
     return Container(
-      padding: padding ?? EdgeInsets.symmetric(
-        horizontal: isMobile ? 16 : 48,
-        vertical: 32,
-      ),
+      padding:
+          padding ??
+          EdgeInsets.symmetric(horizontal: isMobile ? 16 : 48, vertical: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -39,9 +38,9 @@ class WeddingDetailsSection extends StatelessWidget {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 32),
-          
+
           // Ceremony Card
           _EventCard(
             title: 'Lễ Gia Tiên',
@@ -51,9 +50,9 @@ class WeddingDetailsSection extends StatelessWidget {
             address: weddingInfo.ceremonyAddress,
             isMobile: isMobile,
           ),
-          
+
           const SizedBox(height: 24),
-          
+
           // Reception Card
           _EventCard(
             title: 'Tiệc Cưới',
@@ -91,12 +90,13 @@ class _EventCard extends StatelessWidget {
   Future<void> _openDirections(BuildContext context) async {
     // Encode address for URL
     final encodedAddress = Uri.encodeComponent(address);
-    final googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$encodedAddress';
+    final googleMapsUrl =
+        'https://www.google.com/maps/search/?api=1&query=$encodedAddress';
     final appleMapsUrl = 'https://maps.apple.com/?q=$encodedAddress';
-    
+
     // Try to open Google Maps URL
     final uri = Uri.parse(googleMapsUrl);
-    
+
     try {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -132,11 +132,11 @@ class _EventCard extends StatelessWidget {
 
   Future<void> _copyAddress(BuildContext context) async {
     await Clipboard.setData(ClipboardData(text: address));
-    
+
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Row(
+        const SnackBar(
+          content: Row(
             children: [
               Icon(Icons.check_circle, color: Colors.white),
               SizedBox(width: 8),
@@ -155,17 +155,12 @@ class _EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 8,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           gradient: LinearGradient(
-            colors: [
-              Colors.white,
-              Colors.pink.shade50.withOpacity(0.3),
-            ],
+            colors: [Colors.white, Colors.pink.shade50.withValues(alpha: 0.3)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -185,7 +180,7 @@ class _EventCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.pink.shade200.withOpacity(0.5),
+                          color: Colors.pink.shade200.withValues(alpha: 0.5),
                           blurRadius: 8,
                           offset: const Offset(0, 4),
                         ),
@@ -210,9 +205,9 @@ class _EventCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Time Information
               _InfoRow(
                 icon: Icons.access_time,
@@ -220,9 +215,9 @@ class _EventCard extends StatelessWidget {
                 value: time,
                 isMobile: isMobile,
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Venue Information
               _InfoRow(
                 icon: Icons.location_city,
@@ -230,9 +225,9 @@ class _EventCard extends StatelessWidget {
                 value: venue,
                 isMobile: isMobile,
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Address Information
               _InfoRow(
                 icon: Icons.place,
@@ -240,9 +235,9 @@ class _EventCard extends StatelessWidget {
                 value: address,
                 isMobile: isMobile,
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Action Buttons
               Row(
                 children: [
@@ -277,10 +272,7 @@ class _EventCard extends StatelessWidget {
                           vertical: isMobile ? 12 : 16,
                           horizontal: isMobile ? 12 : 20,
                         ),
-                        side: BorderSide(
-                          color: Colors.pink.shade400,
-                          width: 2,
-                        ),
+                        side: BorderSide(color: Colors.pink.shade400, width: 2),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -320,7 +312,7 @@ class _InfoRow extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: const Color(0xFFFFC107).withOpacity(0.2), // Gold color
+            color: const Color(0xFFFFC107).withValues(alpha: 0.2), // Gold color
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(

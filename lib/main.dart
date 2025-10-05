@@ -11,7 +11,18 @@ import 'package:wedding_invitation_app/widgets/message_section.dart';
 // Import domain entities
 import 'package:wedding_invitation_app/features/wedding/domain/entities/wedding_info.dart';
 
-void main() {
+// Import dependency injection
+import 'package:wedding_invitation_app/core/di/service_locator.dart';
+import 'package:wedding_invitation_app/core/services/wedding_data_service.dart';
+import 'package:wedding_invitation_app/core/services/gallery_service.dart';
+import 'package:wedding_invitation_app/core/services/message_service.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Setup dependency injection
+  await sl.setupDependencies();
+
   runApp(const WeddingApp());
 }
 
@@ -42,79 +53,21 @@ class InvitationPage extends StatefulWidget {
 
 class _InvitationPageState extends State<InvitationPage> {
   final ScrollController _scrollController = ScrollController();
-  
-  // Sample wedding data
-  final WeddingInfo _weddingInfo = const WeddingInfo(
-    brideName: 'Trần Thị B',
-    groomName: 'Nguyễn Văn A',
-    weddingDate: DateTime(2025, 10, 20),
-    ceremonyVenue: 'Nhà hàng Diamond',
-    ceremonyAddress: '123 Đường Láng, Đống Đa, Hà Nội',
-    ceremonyTime: '09:00 AM, Thứ Bảy, 20/10/2025',
-    receptionVenue: 'Trung tâm Tiệc cưới Diamond',
-    receptionAddress: '123 Đường Láng, Đống Đa, Hà Nội',
-    receptionTime: '18:00 PM, Thứ Bảy, 20/10/2025',
-    loveStory: 'Chúng tôi gặp nhau vào một ngày mùa xuân...',
-    timeline: [
-      TimelineEvent(
-        title: 'Lần Đầu Gặp Mặt',
-        description: 'Chúng tôi gặp nhau lần đầu tiên tại một quán cà phê nhỏ ở Hà Nội. Đó là một ngày mùa xuân đẹp trời, và chúng tôi đã trò chuyện suốt cả buổi chiều.',
-        date: DateTime(2020, 3, 15),
-      ),
-      TimelineEvent(
-        title: 'Ngày Hẹn Hò Đầu Tiên',
-        description: 'Buổi hẹn hò đầu tiên tại công viên Thống Nhất. Chúng tôi đã đi dạo, uống trà sữa và cùng nhau xem hoàng hôn.',
-        date: DateTime(2020, 4, 10),
-      ),
-      TimelineEvent(
-        title: 'Lễ Đính Hôn',
-        description: 'Ngày trọng đại khi chúng tôi chính thức cam kết với nhau trước gia đình hai bên. Đó là một buổi lễ ấm cúng và tràn đầy niềm vui.',
-        date: DateTime(2024, 6, 15),
-      ),
-      TimelineEvent(
-        title: 'Chuẩn Bị Đám Cưới',
-        description: 'Những tháng ngày chuẩn bị cho đám cưới thật vất vả nhưng cũng rất hạnh phúc. Chúng tôi đã lựa chọn từng chi tiết nhỏ với tất cả tình yêu.',
-        date: DateTime(2025, 8, 1),
-      ),
-    ],
-  );
 
-  // Sample gallery images
-  final List<GalleryImage> _galleryImages = const [
-    GalleryImage(
-      url: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
-      category: 'Pre-wedding',
-      title: 'Pre-wedding shoot',
-      description: 'Bộ ảnh cưới của chúng tôi',
-    ),
-    GalleryImage(
-      url: 'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800',
-      category: 'Pre-wedding',
-      title: 'Romantic moments',
-    ),
-    GalleryImage(
-      url: 'https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800',
-      category: 'Đính hôn',
-      title: 'Engagement ceremony',
-      description: 'Lễ đính hôn ấm cúng',
-    ),
-    GalleryImage(
-      url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800',
-      category: 'Gia đình',
-      title: 'Family gathering',
-    ),
-    GalleryImage(
-      url: 'https://images.unsplash.com/photo-1573495627361-d9b87960b12d?w=800',
-      category: 'Pre-wedding',
-      title: 'Love in the air',
-    ),
-    GalleryImage(
-      url: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800',
-      category: 'Gia đình',
-      title: 'With family',
-      description: 'Gia đình là điều quan trọng nhất',
-    ),
-  ];
+  // Get services from dependency injection
+  late final WeddingInfo _weddingInfo;
+  late final List<GalleryImage> _galleryImages;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize data from services
+    final weddingDataService = sl.get<WeddingDataService>();
+    final galleryService = sl.get<GalleryService>();
+
+    _weddingInfo = weddingDataService.getSampleWeddingData();
+    _galleryImages = galleryService.getSampleGalleryData();
+  }
 
   @override
   void dispose() {
@@ -122,9 +75,25 @@ class _InvitationPageState extends State<InvitationPage> {
     super.dispose();
   }
 
-  void _handleMessageSubmit(String name, String message) {
-    // In production, this would send data to a backend
-    print('Message from $name: $message');
+  Future<void> _handleMessageSubmit(String name, String message) async {
+    final messageService = sl.get<MessageService>();
+    final success = await messageService.addMessage(name, message);
+
+    if (success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Cảm ơn bạn đã gửi lời chúc!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Có lỗi xảy ra, vui lòng thử lại!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -158,9 +127,7 @@ class _InvitationPageState extends State<InvitationPage> {
             ),
 
             // 2. Story Timeline Section
-            StoryTimelineSection(
-              events: _weddingInfo.timeline,
-            ),
+            StoryTimelineSection(events: _weddingInfo.timeline),
 
             // Divider
             Container(
@@ -178,9 +145,7 @@ class _InvitationPageState extends State<InvitationPage> {
             ),
 
             // 3. Wedding Details Section
-            WeddingDetailsSection(
-              weddingInfo: _weddingInfo,
-            ),
+            WeddingDetailsSection(weddingInfo: _weddingInfo),
 
             // Divider
             Container(
@@ -198,9 +163,7 @@ class _InvitationPageState extends State<InvitationPage> {
             ),
 
             // 4. Gallery Section
-            GallerySection(
-              images: _galleryImages,
-            ),
+            GallerySection(images: _galleryImages),
 
             // Divider
             Container(
@@ -229,20 +192,14 @@ class _InvitationPageState extends State<InvitationPage> {
               padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Colors.pink.shade50,
-                    Colors.pink.shade100,
-                  ],
+                  colors: [Colors.pink.shade50, Colors.pink.shade100],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
               ),
               child: Column(
                 children: [
-                  Text(
-                    '❤️',
-                    style: TextStyle(fontSize: 32),
-                  ),
+                  const Text('❤️', style: TextStyle(fontSize: 32)),
                   const SizedBox(height: 16),
                   Text(
                     'Cảm ơn bạn đã đến chung vui cùng chúng tôi!',
@@ -257,15 +214,15 @@ class _InvitationPageState extends State<InvitationPage> {
                   Text(
                     '${_weddingInfo.brideName} & ${_weddingInfo.groomName}',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.pink.shade600,
-                        ),
+                      color: Colors.pink.shade600,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   Text(
                     '© 2025 Wedding Invitation',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey.shade600,
-                        ),
+                      color: Colors.grey.shade600,
+                    ),
                   ),
                 ],
               ),
@@ -273,7 +230,7 @@ class _InvitationPageState extends State<InvitationPage> {
           ],
         ),
       ),
-      
+
       // Floating action button for scroll to top
       floatingActionButton: _buildScrollToTopButton(),
     );

@@ -5,13 +5,13 @@ class HeroSection extends StatefulWidget {
   final String brideName;
   final String groomName;
   final DateTime weddingDate;
-  
+
   const HeroSection({
-    Key? key,
+    super.key,
     required this.brideName,
     required this.groomName,
     required this.weddingDate,
-  }) : super(key: key);
+  });
 
   @override
   State<HeroSection> createState() => _HeroSectionState();
@@ -24,7 +24,7 @@ class _HeroSectionState extends State<HeroSection> {
   void initState() {
     super.initState();
     // Tự động mở thiệp sau 1 giây
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       setState(() {
         _isOpened = true;
       });
@@ -33,7 +33,7 @@ class _HeroSectionState extends State<HeroSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: Stack(
         children: [
@@ -47,11 +47,11 @@ class _HeroSectionState extends State<HeroSection> {
               ),
             ),
           ),
-          
+
           // Card Animation
           Center(
             child: AnimatedContainer(
-              duration: Duration(milliseconds: 1500),
+              duration: const Duration(milliseconds: 1500),
               curve: Curves.easeInOut,
               transform: Matrix4.identity()
                 ..setEntry(3, 2, 0.001)
@@ -61,7 +61,7 @@ class _HeroSectionState extends State<HeroSection> {
                 child: Container(
                   width: 320,
                   height: 450,
-                  padding: EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(24),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -71,37 +71,36 @@ class _HeroSectionState extends State<HeroSection> {
                         style: Theme.of(context).textTheme.headlineLarge,
                         textAlign: TextAlign.center,
                       ).animate().fadeIn(delay: 2000.ms).scale(),
-                      
-                      SizedBox(height: 20),
-                      
+
+                      const SizedBox(height: 20),
+
                       // Lời mời
                       Text(
                         'Trân trọng kính mời',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ).animate().fadeIn(delay: 2500.ms),
-                      
-                      SizedBox(height: 10),
-                      
+
+                      const SizedBox(height: 10),
+
                       Text(
                         'đến dự lễ cưới của chúng tôi',
                         style: Theme.of(context).textTheme.bodyMedium,
                         textAlign: TextAlign.center,
                       ).animate().fadeIn(delay: 3000.ms),
-                      
-                      SizedBox(height: 30),
-                      
+
+                      const SizedBox(height: 30),
+
                       // Ngày cưới
                       Container(
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: Colors.pink.shade50,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           '${widget.weddingDate.day}/${widget.weddingDate.month}/${widget.weddingDate.year}',
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            color: Colors.pink,
-                          ),
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(color: Colors.pink),
                         ),
                       ).animate().fadeIn(delay: 3500.ms).scale(),
                     ],

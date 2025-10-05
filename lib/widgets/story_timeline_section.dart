@@ -6,11 +6,8 @@ class StoryTimelineSection extends StatelessWidget {
   final List<TimelineEvent> events;
   final EdgeInsets? padding;
 
-  const StoryTimelineSection({
-    Key? key,
-    required this.events,
-    this.padding,
-  }) : super(key: key);
+  const StoryTimelineSection({Key? key, required this.events, this.padding})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,28 +15,27 @@ class StoryTimelineSection extends StatelessWidget {
     final isMobile = screenWidth < 600;
 
     return Container(
-      padding: padding ?? EdgeInsets.symmetric(
-        horizontal: isMobile ? 16 : 48,
-        vertical: 32,
-      ),
+      padding:
+          padding ??
+          EdgeInsets.symmetric(horizontal: isMobile ? 16 : 48, vertical: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Section Title
           Text(
-            'Câu Chuyện Tình Yêu',
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              color: Colors.pink.shade700,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'DancingScript',
-            ),
-          )
-          .animate()
-          .fadeIn(duration: 600.ms)
-          .slideY(begin: -0.3, end: 0),
-          
+                'Câu Chuyện Tình Yêu',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: Colors.pink.shade700,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'DancingScript',
+                ),
+              )
+              .animate()
+              .fadeIn(duration: 600.ms)
+              .slide(begin: const Offset(0, -0.3), end: Offset.zero),
+
           const SizedBox(height: 32),
-          
+
           // Timeline Events
           ListView.builder(
             shrinkWrap: true,
@@ -99,10 +95,7 @@ class _TimelineItem extends StatelessWidget {
                       width: 2,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [
-                            Colors.pink.shade300,
-                            Colors.pink.shade400,
-                          ],
+                          colors: [Colors.pink.shade300, Colors.pink.shade400],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                         ),
@@ -111,7 +104,7 @@ class _TimelineItem extends StatelessWidget {
                   )
                 else
                   const SizedBox(height: 0),
-                
+
                 // Dot
                 Container(
                   width: 16,
@@ -119,10 +112,7 @@ class _TimelineItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.pink.shade400,
-                    border: Border.all(
-                      color: Colors.pink.shade100,
-                      width: 3,
-                    ),
+                    border: Border.all(color: Colors.pink.shade100, width: 3),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.pink.shade200.withOpacity(0.5),
@@ -131,13 +121,11 @@ class _TimelineItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
-                .animate()
-                .scale(
+                ).animate().scale(
                   delay: (300 + index * 200).ms,
                   duration: 400.ms,
                 ),
-                
+
                 // Bottom Line
                 if (!isLast)
                   Expanded(
@@ -145,10 +133,7 @@ class _TimelineItem extends StatelessWidget {
                       width: 2,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [
-                            Colors.pink.shade400,
-                            Colors.pink.shade300,
-                          ],
+                          colors: [Colors.pink.shade400, Colors.pink.shade300],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                         ),
@@ -160,103 +145,92 @@ class _TimelineItem extends StatelessWidget {
               ],
             ),
           ),
-          
+
           const SizedBox(width: 16),
-          
+
           // Event Content
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(
-                bottom: isLast ? 0 : 32,
-              ),
+              padding: EdgeInsets.only(bottom: isLast ? 0 : 32),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Event Date
                   Text(
-                    _formatDate(event.date),
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Color(0xFFFFC107), // Gold color
-                      fontWeight: FontWeight.w600,
-                      fontSize: isMobile ? 14 : 16,
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(
-                    delay: (400 + index * 200).ms,
-                    duration: 500.ms,
-                  )
-                  .slideX(begin: -0.2, end: 0),
-                  
+                        _formatDate(event.date),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: const Color(0xFFFFC107), // Gold color
+                          fontWeight: FontWeight.w600,
+                          fontSize: isMobile ? 14 : 16,
+                        ),
+                      )
+                      .animate()
+                      .fadeIn(delay: (400 + index * 200).ms, duration: 500.ms)
+                      .slide(begin: const Offset(-0.2, 0), end: Offset.zero),
+
                   const SizedBox(height: 8),
-                  
+
                   // Event Title
                   Text(
-                    event.title,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Colors.pink.shade700,
-                      fontWeight: FontWeight.bold,
-                      fontSize: isMobile ? 18 : 22,
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(
-                    delay: (500 + index * 200).ms,
-                    duration: 500.ms,
-                  )
-                  .slideX(begin: -0.2, end: 0),
-                  
+                        event.title,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Colors.pink.shade700,
+                          fontWeight: FontWeight.bold,
+                          fontSize: isMobile ? 18 : 22,
+                        ),
+                      )
+                      .animate()
+                      .fadeIn(delay: (500 + index * 200).ms, duration: 500.ms)
+                      .slide(begin: const Offset(-0.2, 0), end: Offset.zero),
+
                   const SizedBox(height: 8),
-                  
+
                   // Event Description
                   Text(
-                    event.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey.shade700,
-                      height: 1.5,
-                      fontSize: isMobile ? 14 : 16,
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(
-                    delay: (600 + index * 200).ms,
-                    duration: 500.ms,
-                  )
-                  .slideX(begin: -0.2, end: 0),
-                  
+                        event.description,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey.shade700,
+                          height: 1.5,
+                          fontSize: isMobile ? 14 : 16,
+                        ),
+                      )
+                      .animate()
+                      .fadeIn(delay: (600 + index * 200).ms, duration: 500.ms)
+                      .slide(begin: const Offset(-0.2, 0), end: Offset.zero),
+
                   // Optional Image
                   if (event.imageUrl != null) ...[
                     const SizedBox(height: 12),
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        event.imageUrl!,
-                        width: isMobile ? double.infinity : 300,
-                        height: isMobile ? 200 : 250,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            event.imageUrl!,
                             width: isMobile ? double.infinity : 300,
                             height: isMobile ? 200 : 250,
-                            decoration: BoxDecoration(
-                              color: Colors.pink.shade50,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(
-                              Icons.image_not_supported,
-                              color: Colors.pink.shade200,
-                              size: 48,
-                            ),
-                          );
-                        },
-                      ),
-                    )
-                    .animate()
-                    .fadeIn(
-                      delay: (700 + index * 200).ms,
-                      duration: 500.ms,
-                    )
-                    .scale(begin: Offset(0.9, 0.9), end: Offset(1, 1)),
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                width: isMobile ? double.infinity : 300,
+                                height: isMobile ? 200 : 250,
+                                decoration: BoxDecoration(
+                                  color: Colors.pink.shade50,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Icon(
+                                  Icons.image_not_supported,
+                                  color: Colors.pink.shade200,
+                                  size: 48,
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                        .animate()
+                        .fadeIn(delay: (700 + index * 200).ms, duration: 500.ms)
+                        .scale(
+                          begin: const Offset(0.9, 0.9),
+                          end: const Offset(1, 1),
+                        ),
                   ],
                 ],
               ),

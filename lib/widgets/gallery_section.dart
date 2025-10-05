@@ -81,53 +81,51 @@ class _GallerySectionState extends State<GallerySection> {
     final crossAxisCount = isMobile ? 2 : (screenWidth < 900 ? 3 : 4);
 
     return Container(
-      padding: widget.padding ??
-          EdgeInsets.symmetric(
-            horizontal: isMobile ? 16 : 48,
-            vertical: 32,
-          ),
+      padding:
+          widget.padding ??
+          EdgeInsets.symmetric(horizontal: isMobile ? 16 : 48, vertical: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Section Title
           Text(
-            widget.title,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                widget.title,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   color: Colors.pink.shade700,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'DancingScript',
                 ),
-          )
+              )
               .animate()
               .fadeIn(duration: 600.ms)
-              .slideY(begin: -0.3, end: 0),
+              .slide(begin: const Offset(0, -0.3), end: Offset.zero),
 
           const SizedBox(height: 24),
 
           // Category Tabs
           SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: GalleryCategory.values.map((category) {
-                final isSelected = _selectedCategory == category.label;
-                return Padding(
-                  padding: const EdgeInsets.only(right: 12),
-                  child: _CategoryChip(
-                    label: category.label,
-                    isSelected: isSelected,
-                    onTap: () {
-                      setState(() {
-                        _selectedCategory = category.label;
-                      });
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
-          )
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: GalleryCategory.values.map((category) {
+                    final isSelected = _selectedCategory == category.label;
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: _CategoryChip(
+                        label: category.label,
+                        isSelected: isSelected,
+                        onTap: () {
+                          setState(() {
+                            _selectedCategory = category.label;
+                          });
+                        },
+                      ),
+                    );
+                  }).toList(),
+                ),
+              )
               .animate()
               .fadeIn(delay: 300.ms, duration: 500.ms)
-              .slideX(begin: -0.2, end: 0),
+              .slide(begin: const Offset(-0.2, 0), end: Offset.zero),
 
           const SizedBox(height: 32),
 
@@ -139,8 +137,8 @@ class _GallerySectionState extends State<GallerySection> {
                     child: Text(
                       'Không có ảnh trong danh mục này',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Colors.grey.shade600,
-                          ),
+                        color: Colors.grey.shade600,
+                      ),
                     ),
                   ),
                 )
@@ -245,7 +243,7 @@ class _GalleryThumbnail extends StatelessWidget {
                       child: CircularProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
+                                  loadingProgress.expectedTotalBytes!
                             : null,
                         color: Colors.pink.shade300,
                       ),
@@ -284,7 +282,7 @@ class _GalleryThumbnail extends StatelessWidget {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Colors.black.withOpacity(0.3),
+                      Colors.black.withValues(alpha: 0.3),
                     ],
                   ),
                 ),
@@ -366,7 +364,7 @@ class _LightboxViewerState extends State<_LightboxViewer> {
                             child: CircularProgressIndicator(
                               value: loadingProgress.expectedTotalBytes != null
                                   ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
+                                        loadingProgress.expectedTotalBytes!
                                   : null,
                               color: Colors.pink.shade300,
                             ),
@@ -423,8 +421,11 @@ class _LightboxViewerState extends State<_LightboxViewer> {
                 bottom: 0,
                 child: Center(
                   child: IconButton(
-                    icon: const Icon(Icons.chevron_left,
-                        color: Colors.white, size: 48),
+                    icon: const Icon(
+                      Icons.chevron_left,
+                      color: Colors.white,
+                      size: 48,
+                    ),
                     onPressed: () {
                       _pageController.previousPage(
                         duration: const Duration(milliseconds: 300),
@@ -443,8 +444,11 @@ class _LightboxViewerState extends State<_LightboxViewer> {
                 bottom: 0,
                 child: Center(
                   child: IconButton(
-                    icon: const Icon(Icons.chevron_right,
-                        color: Colors.white, size: 48),
+                    icon: const Icon(
+                      Icons.chevron_right,
+                      color: Colors.white,
+                      size: 48,
+                    ),
                     onPressed: () {
                       _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
@@ -473,7 +477,7 @@ class _LightboxViewerState extends State<_LightboxViewer> {
                     shape: BoxShape.circle,
                     color: _currentIndex == index
                         ? Colors.pink.shade400
-                        : Colors.white.withOpacity(0.5),
+                        : Colors.white.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -490,7 +494,7 @@ class _LightboxViewerState extends State<_LightboxViewer> {
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
+                  color: Colors.black.withValues(alpha: 0.6),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
